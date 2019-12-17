@@ -10,7 +10,7 @@ function overrideGetColor(func)
   local _vanilla = func
   return function()
     local r, g, b, a = _vanilla()
-    return round(r / 255), round(g / 255), round(b / 255), round(a / 255)
+    return r / 255, g / 255, b / 255, a / 255
   end
 end
 
