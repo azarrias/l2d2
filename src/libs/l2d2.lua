@@ -14,9 +14,28 @@ function overrideGetColor(func)
   end
 end
 
+function overrideSetColor(func)
+  local _vanilla = func
+  return function(...)
+    local arg = {...}
+    
+    if #arg == 1 and type(arg[1]) == 'table' then
+      arg = { unpack(arg[1]) }
+    end
+    
+    for i, v in pairs(arg) do
+      arg[i] = v * 255
+    end
+    
+    _vanilla(arg)
+  end
+end
+
 if not love11 then
   love.graphics.getBackgroundColor = overrideGetColor(love.graphics.getBackgroundColor)
   love.graphics.getColor = overrideGetColor(love.graphics.getColor)
+  love.graphics.setBackgroundColor = overrideSetColor(love.graphics.setBackgroundColor)
+  love.graphics.setColor = overrideSetColor(love.graphics.setColor)
 end
   
 love.graphics.vanillaSetColor = love.graphics.setColor

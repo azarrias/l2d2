@@ -20,12 +20,13 @@ function love.load()
 end
 
 function love.draw()
-  love.graphics.setColor({0.8, 0.2, 0.2, 1})
+  love.graphics.setBackgroundColor(0, 0.1, 0)
+  love.graphics.setColor({0.6, 0.2, 0.2, 1})
   r, g, b, a = love.graphics.getColor()
   love.graphics.rectangle('fill', 10, 10, 340, 74)
   r, g, b, a = love.graphics.getBackgroundColor()
   
-  love.graphics.setColor(1, 1, 1)
+  love.graphics.setColor(0.8, 0.8, 0.8)
   love.graphics.print(APP_TITLE, 20, 20)
   love.graphics.print("LÖVE Library Wrapper for Multiplatform", 20, 40)
   love.graphics.print("  and Version Compatibility", 20, 56)
