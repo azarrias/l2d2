@@ -33,5 +33,4 @@ function love.draw()
   love.graphics.setColor(0.8, 0.6, 0.6)
   love.graphics.print("O.S.: " .. os_str, 10, 100)
   love.graphics.print(v_str, 10, 116)
-
 end
