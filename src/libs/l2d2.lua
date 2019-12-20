@@ -8,7 +8,9 @@ end
 
 local reg = debug.getregistry()
 local SpriteBatch = reg.SpriteBatch
-local _spriteBatchGetColor, _spriteBatchSetColor = SpriteBatch.getColor, SpriteBatch.setColor
+local _sbGetColor, _sbSetColor = SpriteBatch.getColor, SpriteBatch.setColor
+local ParticleSystem = reg.ParticleSystem
+local _psGetColors, _psSetColors = ParticleSystem.getColors, ParticleSystem.setColors
 
 local grp = love.graphics
 local _clear = grp.clear
@@ -17,35 +19,37 @@ local _getColor, _setColor = grp.getColor, grp.setColor
 
 -- Converts color values from 0-1 range to 0-255
 local function normalizedToByte(table)
-  if #table == 1 and type(table[1]) == 'table' then
-    table = { unpack(table[1]) }
+  for i, arg in ipairs(table) do
+    if type(arg) == 'table' then
+      for j, elem in ipairs(arg) do
+        arg[j] = round(elem * 255)
+      end
+    else
+      table[i] = round(arg * 255)
+    end
   end
-  
-  for i, v in ipairs(table) do
-    table[i] = round(v * 255)
-  end
-  
   return table
 end
 
 -- Converts color values from 0-255 range to 0-1
 local function byteToNormalized(table)
-  if #table == 1 and type(table[1]) == 'table' then
-    table = { unpack(table[1]) }
+  for i, arg in ipairs(table) do
+    if type(arg) == 'table' then
+      for j, elem in ipairs(arg) do
+        arg[j] = elem / 255
+      end
+    else
+      table[i] = arg / 255
+    end
   end
-  
-  for i, v in ipairs(table) do
-    table[i] = v / 255
-  end
-  
   return table
 end
 
 local function overrideGetColor(vanilla, func)
   return function(...)
     local args = {...}
-    local r, g, b, a = vanilla(args[1])
-    return unpack(byteToNormalized({r, g, b, a}))
+    local result = { vanilla(args[1]) }
+    return unpack(byteToNormalized(result))
   end
 end
 
@@ -71,6 +75,8 @@ if not love11 then
   grp.setBackgroundColor = overrideSetColor(_setBackgroundColor, grp.setBackgroundColor)
   grp.getColor = overrideGetColor(_getColor, grp.getColor)
   grp.setColor = overrideSetColor(_setColor, grp.setColor)
-  SpriteBatch.getColor = overrideGetColor(_spriteBatchGetColor, SpriteBatch.getColor)
-  SpriteBatch.setColor = overrideSetColor(_spriteBatchSetColor, SpriteBatch.setColor)
+  SpriteBatch.getColor = overrideGetColor(_sbGetColor, SpriteBatch.getColor)
+  SpriteBatch.setColor = overrideSetColor(_sbSetColor, SpriteBatch.setColor)
+  ParticleSystem.getColors = overrideGetColor(_psGetColors, ParticleSystem.getColors)
+  ParticleSystem.setColors = overrideSetColor(_psSetColors, ParticleSystem.setColors)
 end

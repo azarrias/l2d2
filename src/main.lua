@@ -27,6 +27,16 @@ function love.load()
   spriteBatch = love.graphics.newSpriteBatch(image, maxsprites)
   spriteBatch:setColor(0.6, 0.6, 0.8)
   r, g, b, a = spriteBatch:getColor()
+  
+  -- testing the particle system
+  particles = love.graphics.newParticleSystem(image)
+  particles:setColors({1, 0.6, 0.6}, {1, 1, 1}, {0.1, 0.1, 0.2, 0})
+  --particles:setColors(1, 0.6, 0.6, 1, 1, 1, 1, 1, 0.1, 0.1, 0.2, 0)
+  c1, c2, c3, c4 = particles:getColors()
+  
+  mesh = love.graphics.newMesh({{0, 0}}, "fan", "dynamic")
+  --mesh = love.graphics.newMesh(1, "fan", "dynamic")
+  x, y, u, v, r, g, b, a = mesh:getVertex(1)
 end
 
 function love.draw()
@@ -37,6 +47,7 @@ function love.draw()
   r, g, b, a = love.graphics.getBackgroundColor()
   
   love.graphics.setColor(0.8, 0.8, 0.8)
+  r, g, b, a = love.graphics.getColor()
   love.graphics.print(app_title, 20, 20)
   love.graphics.print("LÖVE Library Wrapper for Multiplatform", 20, 40)
   love.graphics.print("  and Version Compatibility", 20, 56)
