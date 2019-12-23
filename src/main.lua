@@ -34,7 +34,9 @@ function love.load()
   --particles:setColors(1, 0.6, 0.6, 1, 1, 1, 1, 1, 0.1, 0.1, 0.2, 0)
   c1, c2, c3, c4 = particles:getColors()
   
-  mesh = love.graphics.newMesh({{0, 0}}, "fan", "dynamic")
+  -- testing the affected mesh methods
+  mesh = love.graphics.newMesh({{0, 0}, {1, 0, 1, 1, 0.5, 0.4, 0.6}}, "fan", "dynamic")
+  mesh:setVertex(1, 2, 2, 1, 1, 0.4, 0.1)
   --mesh = love.graphics.newMesh(1, "fan", "dynamic")
   x, y, u, v, r, g, b, a = mesh:getVertex(1)
 end
